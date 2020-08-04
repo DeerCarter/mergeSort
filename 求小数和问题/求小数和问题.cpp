@@ -9,25 +9,155 @@
 		2左边比2小的 1，
 		5左边比5 小的 1 3 4 2
 		和是16
-		 使用归并排序解决，
-		 在merge的过程中进行判断相加
+		使用归并排序解决，
+		在merge的过程中进行判断相加
+
+*/
+/*
+	逆序对问题
+	在一个数组中，左边的数如果比右边的数大，则这两个数构成一个逆序对，请打印出所有的逆序对
 
 */
 
 #include <iostream>
 #include<vector>
 using namespace std;
+int result;
+vector<vector<int> > nixudui;
+// 进行合并操作
+//void merge(vector<int>& nums, int L, int mid, int R) {
+//	// 先构建一个辅助数组
+//	vector<int> helper(R - L + 1, 0);
+//	int p1 = L;
+//	int p2 = mid + 1;
+//	int help_start = 0;
+//	while (p1 <= mid && p2 <= R) {
+//		result += nums[p1] < nums[p2] ? (R - p2 + 1) * nums[p1] : 0;  // 计算小和
+//		if (nums[p1] > nums[p2]) {
+//			// 这就构成了逆序对 这样的话 p1后面直到mid的数都与p2 构成了一个逆序对
+//			vector<int> mid_result;
+//			/*mid_result.push_back(nums[p1]);
+//			mid_result.push_back(nums[p2]);
+//			nixudui.push_back(mid_result);*/
+//			int index = p1;
+//			while (index <= mid) {
+//				mid_result.push_back(nums[index]);
+//				mid_result.push_back(nums[p2]);
+//				nixudui.push_back(mid_result);
+//				mid_result.clear();
+//				index++;
+//			}
+//		}
+//		//cout << result << endl;
+//		helper[help_start++] = nums[p1] < nums[p2] ? nums[p1++] : nums[p2++];
+//	}
+//	while (p1 <= mid) {
+//		helper[help_start++] = nums[p1++];
+//	}
+//	while (p2 <= R) {
+//		helper[help_start++] = nums[p2++];
+//	}
+//	// copy到原数组
+//	for (int i = 0; i < helper.size(); i++) {
+//		nums[L + i] = helper[i];
+//	}
+//}
+//
+//// 递归调用的函数 [L.....R] 进行归并排序
+//void sortProcess(vector<int>& nums, int L, int R) {
+//	if (L == R) return;
+//	int mid = L + (R - L) / 2;
+//	sortProcess(nums, L, mid);
+//	sortProcess(nums, mid + 1, R);
+//	merge(nums, L, mid, R);
+//}
+//
+//void mergesort(vector<int>& nums) {
+//	sortProcess(nums, 0, nums.size() - 1);
+//}
+//
+//void mergesort2(vector<int>& nums) {
+//	sortProcess(nums, 0, nums.size() - 1);
+//}
+//void sortProcess2(vector<int>& nums, int L, int R) {
+//	if (L == R) return;
+//	int mid = L + (R - L) / 2;
+//	sortProcess(nums, L, mid);
+//	sortProcess(nums, mid + 1, R);
+//	merge(nums, L, mid, R);
+//}
+//void merge2(vector<int>& nums, int l, int mid, int r) {
+//	vector<int> helper(r - l + 1, 0);
+//	int p1 = l;
+//	int p2 = mid + 1;
+//	int helper_start = 0;
+//	while (p1 <= mid && p2 <= r) {
+//		helper[helper_start++] = nums[p1] > nums[p2] ? nums[p2++] : nums[p1++];
+//	}
+//	while (p1 <= mid) {
+//		helper[helper_start++] = nums[p1++];
+//	}
+//	while (p2 <= r) {
+//		helper[helper_start++] = nums[p2++];
+//	}
+//	for (int i = 0; i < helper_start; i++) {
+//		nums[l + i] = helper[i];
+//	}
+//
+//}
 
-void sortProcess(vector<int)
+void merge(vector<int>& nums, int L, int mid, int R) {
+	vector<int> helper(R - L + 1, 0);
+	int p1 = L;
+	int p2 = mid+1;
+	int helper_start = 0;
+	while (p1 <= mid && p2 <= R) {
+		// 判断逆序对的个数
+		if (nums[p1] > nums[p2]) {
+			result += mid - p1 + 1;
+		}
+		helper[helper_start++] = nums[p1] > nums[p2] ? nums[p2++] : nums[p1++];
+	}
+	while (p1 <= mid) {
+		helper[helper_start++] = nums[p1++];
+	}
+	while (p2 <= R) {
+		helper[helper_start++] = nums[p2++];
+	}
 
+	for (int i = 0; i < helper.size(); i++) {
+		nums[L + i] = helper[i];
+	}
+}
+
+void sortProcess(vector<int>& nums, int L, int R) {
+	if (L == R) return;
+	int mid = L + (R - L) / 2;
+	sortProcess(nums, L, mid);
+	sortProcess(nums, mid + 1, R);
+	merge(nums, L, mid, R);
+}
 void mergesort(vector<int>& nums) {
+	// 对nums数组进行归并排序
 	sortProcess(nums, 0, nums.size() - 1);
 }
 int main()
 {
-	vector<int> nums;
+	vector<int> nums = {1,3,2,3,1};
+
 	mergesort(nums);
-    std::cout << "Hello World!\n";
+	for (auto item : nums) {
+		cout << item << " ";
+	}
+	//cout << result << endl;
+    //std::cout << "Hello World!\n";
+	/*for (auto item : nixudui) {
+		for (auto i : item) {
+			cout << i << " ";
+		}
+		cout << endl;*/
+	cout << endl;
+	cout << result << endl;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
